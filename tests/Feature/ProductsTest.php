@@ -98,3 +98,15 @@ test('product edit contains correct values', function () {
         ->assertSee('value="' . $product->price . '"', false)
         ->assertViewHas('product', $product);
 });
+
+test('product update validation error redirects back to form', function () {
+    $product = Product::factory()->create();
+
+    asAdmin()->put('products/' . $product->id, [
+        'name' => '',
+        'price' => ''
+    ])
+        ->assertStatus(302)
+        ->assertInvalid(['name', 'price'])
+        ->assertSessionHasErrors(['name', 'price']);
+});

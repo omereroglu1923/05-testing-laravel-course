@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Contracts\View\View;
 use App\Http\Requests\StoreProductRequest;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\UpdateProductRequest;
 
 class ProductController extends Controller
 {
@@ -33,8 +34,10 @@ class ProductController extends Controller
         return view('products.edit', compact('product'));
     }
 
-    public function update(Product $product): RedirectResponse
+    public function update(UpdateProductRequest $request, Product $product): RedirectResponse
     {
-        //
+        $product->update($request->validated());
+
+        return redirect()->route('products.index');
     }
 }
