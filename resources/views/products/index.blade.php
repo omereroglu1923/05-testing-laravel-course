@@ -29,6 +29,10 @@
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price
                             (EUR)</th>
+                        @if (auth()->user()->is_admin)
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            </th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -37,6 +41,14 @@
                             <td class="px-6 py-4 text-sm text-gray-900">{{ $product->name }}</td>
                             <td class="px-6 py-4 text-sm text-gray-900">${{ number_format($product->price, 2) }}</td>
                             <td class="px-6 py-4 text-sm text-gray-900">{{ $product->price_eur }}</td>
+                            @if (auth()->user()->is_admin)
+                                <td class="px-6 py-4 text-sm text-gray-900">
+                                    <a href="{{ route('products.edit', $product) }}"
+                                        class="px-3 py-1 text-sm bg-slate-400 hover:bg-slate-400/80 rounded-sm text-gray-900">
+                                        Edit
+                                    </a>
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>

@@ -88,3 +88,13 @@ test('create product successful', function () {
     expect($product['name'])->toBe($lastProduct->name)
         ->and($product['price'])->toBe($lastProduct->price);
 });
+
+test('product edit contains correct values', function () {
+    $product = Product::factory()->create();
+
+    asAdmin()->get('products/' . $product->id . '/edit')
+        ->assertStatus(200)
+        ->assertSee('value="' . $product->name . '"', false)
+        ->assertSee('value="' . $product->price . '"', false)
+        ->assertViewHas('product', $product);
+});
