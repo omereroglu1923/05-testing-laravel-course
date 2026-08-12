@@ -12,6 +12,13 @@
     <div class="max-w-3xl mx-auto">
         <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ __('Products') }}</h2>
 
+        @if (auth()->user()->is_admin)
+            <a href="{{ route('products.create') }}"
+                class="block w-max px-4 py-2 text-sm bg-slate-400 hover:bg-slate-400/80 rounded-xl text-gray-900 mb-4">
+                Add new product
+            </a>
+        @endif
+
         <div class="bg-white rounded-lg shadow overflow-hidden">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">

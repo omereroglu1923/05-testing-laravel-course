@@ -1,0 +1,22 @@
+[90m= [39m[34;4mApp\Models\User[39;24m {#8256
+    [34mid[39m: [35m1[39m,
+    [34mname[39m: [32m"[39m[32mProf. Nathanael Rogahn DDS[39m[32m"[39m,
+    [34memail[39m: [32m"[39m[32mtest@test.com[39m[32m"[39m,
+    [34memail_verified_at[39m: [32m"[39m[32m2026-08-12 11:08:51[39m[32m"[39m,
+    #[33mpassword[39m: [32m"[39m\$[32m2y[39m\$[32m12[39m\$[32m3FO.WK8yaG1.SMN1uCCUgOiinwQFTm7GrNT2iB7xLp.5ERoHYMHky[39m[32m"[39m,
+    #[33mremember_token[39m: [32m"[39m[32mmbyhOm8AfI[39m[32m"[39m,
+    [34mcreated_at[39m: [32m"[39m[32m2026-08-12 11:08:51[39m[32m"[39m,
+    [34mupdated_at[39m: [32m"[39m[32m2026-08-12 11:08:51[39m[32m"[39m,
+    [34mis_admin[39m: [35m0[39m,
+  }
+[90m= [39m[34;4mApp\Models\User[39;24m {#7530
+    [34mid[39m: [35m1[39m,
+    [34mname[39m: [32m"[39m[32mProf. Nathanael Rogahn DDS[39m[32m"[39m,
+    [34memail[39m: [32m"[39m[32mtest@test.com[39m[32m"[39m,
+    [34memail_verified_at[39m: [32m"[39m[32m2026-08-12 11:08:51[39m[32m"[39m,
+    #[33mpassword[39m: [32m"[39m\$[32m2y[39m\$[32m12[39m\$[32m3FO.WK8yaG1.SMN1uCCUgOiinwQFTm7GrNT2iB7xLp.5ERoHYMHky[39m[32m"[39m,
+    #[33mremember_token[39m: [32m"[39m[32mmbyhOm8AfI[39m[32m"[39m,
+    [34mcreated_at[39m: [32m"[39m[32m2026-08-12 11:08:51[39m[32m"[39m,
+    [34mupdated_at[39m: [32m"[39m[32m2026-08-12 11:08:51[39m[32m"[39m,
+    [34mis_admin[39m: [35m0[39m,
+  }

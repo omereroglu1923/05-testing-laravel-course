@@ -1,7 +1,17 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+
+function asAdmin(): TestCase
+{
+    $user = User::factory()->create([
+        'is_admin' => true,
+    ]);
+
+    return test()->actingAs($user);
+}
 
 /*
 |--------------------------------------------------------------------------
