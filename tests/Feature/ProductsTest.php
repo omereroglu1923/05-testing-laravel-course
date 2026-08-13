@@ -11,6 +11,8 @@ use App\Mail\ProductCreatedMail;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\ProductDeletedNotification;
 use Illuminate\Support\Facades\Notification;
+use App\Jobs\SyncProductToExternalCatalog;
+use Illuminate\Support\Facades\Queue;
 
 beforeEach(function () {
     /** @var \Tests\TestCase $this */
@@ -194,5 +196,22 @@ test('product deleted notification is sent to admin', function () {
 
     Notification::assertSentTo($admin, ProductDeletedNotification::class, function ($notification) use ($product) {
         return $notification->productName === $product->name;
+    });
+});
+
+test('product creation dispatches sync job', function () {
+    Queue::fake();
+
+    $product = [
+        'name' => 'Queued Product',
+        'price' => 777
+    ];
+
+    asAdmin()
+        ->post('/products', $product)
+        ->assertStatus(302);
+
+    Queue::assertPushed(SyncProductToExternalCatalog::class, function ($job) use ($product) {
+        return $job->product->name === $product['name'];
     });
 });

@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\ProductDeletedNotification;
+use App\Jobs\SyncProductToExternalCatalog;
 
 class ProductController extends Controller
 {
@@ -32,6 +33,8 @@ class ProductController extends Controller
 
         Mail::to(Auth::user()->email)->send(new ProductCreatedMail($product));
 
+        SyncProductToExternalCatalog::dispatch($product);
+
         return redirect()->route('products.index');
     }
 
@@ -52,7 +55,9 @@ class ProductController extends Controller
         $productName = $product->name;
         $product->delete();
 
-        Auth::user()->notify(new ProductDeletedNotification($productName));
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $user->notify(new ProductDeletedNotification($productName));
 
         return redirect()->route('products.index');
     }
