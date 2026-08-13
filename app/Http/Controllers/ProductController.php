@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
+use App\Mail\ProductCreatedMail;
 use App\Models\Product;
 use Illuminate\Contracts\View\View;
-use App\Http\Requests\StoreProductRequest;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
 {
@@ -24,7 +27,9 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request): RedirectResponse
     {
-        Product::create($request->validated());
+        $product = Product::create($request->validated());
+
+        Mail::to(Auth::user()->email)->send(new ProductCreatedMail($product));
 
         return redirect()->route('products.index');
     }

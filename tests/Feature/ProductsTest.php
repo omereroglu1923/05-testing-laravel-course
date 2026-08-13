@@ -7,8 +7,11 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
+use App\Mail\ProductCreatedMail;
+use Illuminate\Support\Facades\Mail;
 
 beforeEach(function () {
+    /** @var \Tests\TestCase $this */
     $this->user = User::factory()->create();
 });
 
@@ -158,4 +161,21 @@ test('api product invalid store returns error', function () {
 
     postJson('/api/products', $product)
         ->assertUnprocessable();
+});
+
+test('product created mail is sent to admin', function () {
+    Mail::fake();
+
+    $product = [
+        'name' => 'Mailed Product',
+        'price' => 555
+    ];
+
+    asAdmin()
+        ->post('/products', $product)
+        ->assertStatus(302);
+
+    Mail::assertSent(ProductCreatedMail::class, function ($mail) use ($product) {
+        return $mail->product->name === $product['name'];
+    });
 });
