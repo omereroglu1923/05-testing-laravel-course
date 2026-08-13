@@ -37,3 +37,10 @@ test('api product invalid store returns error', function () {
     postJson('/api/products', $product)
         ->assertUnprocessable();
 });
+
+test('api product show route does not exist', function () {
+    $product = Product::factory()->create();
+
+    getJson('/api/products/' . $product->id)
+        ->assertStatus(404);
+});

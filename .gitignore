@@ -27,7 +27,6 @@ Homestead.yaml
 Thumbs.db
 
 # Laravel Boost (AI-assisted coding, repoya dahil edilmiyor)
-.claude/
 .mcp.json
 boost.json
 CLAUDE.md
