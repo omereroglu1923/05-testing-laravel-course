@@ -43,10 +43,21 @@
                             <td class="px-6 py-4 text-sm text-gray-900">{{ $product->price_eur }}</td>
                             @if (auth()->user()->is_admin)
                                 <td class="px-6 py-4 text-sm text-gray-900">
-                                    <a href="{{ route('products.edit', $product) }}"
-                                        class="px-3 py-1 text-sm bg-slate-400 hover:bg-slate-400/80 rounded-sm text-gray-900">
-                                        Edit
-                                    </a>
+                                    <div class="flex items-center gap-2">
+                                        <a href="{{ route('products.edit', $product) }}"
+                                            class="px-3 py-1 text-sm bg-slate-400 hover:bg-slate-400/80 rounded-sm text-gray-900">
+                                            Edit
+                                        </a>
+                                        <form action="{{ route('products.destroy', $product) }}" method="POST"
+                                            class="inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Are you sure?')"
+                                                class="px-3 py-1 text-sm bg-red-600 hover:bg-red-600/80 rounded-sm text-white">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             @endif
                         </tr>
