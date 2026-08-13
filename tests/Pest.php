@@ -30,6 +30,8 @@ pest()->extend(TestCase::class)
 
 pest()->group('api')->in('Feature/Api');
 
+pest()->project()->github('omereroglu1923/05-testing-laravel-course');
+
 /*
 |--------------------------------------------------------------------------
 | Expectations
