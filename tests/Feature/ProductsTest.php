@@ -91,12 +91,7 @@ test('non admin cannot access product create page', function () {
         ->assertForbidden();
 });
 
-test('create product successful', function () {
-    $product = [
-        'name' => 'Product 123',
-        'price' => 1234
-    ];
-
+test('create product successful', function ($product) {
     asAdmin()
         ->post('/products', $product)
         ->assertStatus(302)
@@ -107,21 +102,17 @@ test('create product successful', function () {
     $lastProduct = Product::latest()->first();
     expect($product['name'])->toBe($lastProduct->name)
         ->and($product['price'])->toBe($lastProduct->price);
-});
+})->with('products');
 
-test('product edit contains correct values', function () {
-    $product = Product::factory()->create();
-
+test('product edit contains correct values', function ($product) {
     asAdmin()->get('products/' . $product->id . '/edit')
         ->assertStatus(200)
         ->assertSee('value="' . $product->name . '"', false)
         ->assertSee('value="' . $product->price . '"', false)
         ->assertViewHas('product', $product);
-});
+})->with('create product');
 
-test('product update validation error redirects back to form', function () {
-    $product = Product::factory()->create();
-
+test('product update validation error redirects back to form', function ($product) {
     asAdmin()->put('products/' . $product->id, [
         'name' => '',
         'price' => ''
@@ -129,7 +120,7 @@ test('product update validation error redirects back to form', function () {
         ->assertStatus(302)
         ->assertInvalid(['name', 'price'])
         ->assertSessionHasErrors(['name', 'price']);
-});
+})->with('create product');
 
 test('product delete successful', function () {
     $product = Product::factory()->create();
