@@ -13,6 +13,8 @@ use App\Notifications\ProductDeletedNotification;
 use Illuminate\Support\Facades\Notification;
 use App\Jobs\SyncProductToExternalCatalog;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
     /** @var \Tests\TestCase $this */
@@ -214,4 +216,24 @@ test('product creation dispatches sync job', function () {
     Queue::assertPushed(SyncProductToExternalCatalog::class, function ($job) use ($product) {
         return $job->product->name === $product['name'];
     });
+});
+
+test('product image is stored on upload', function () {
+    Storage::fake('public');
+
+    $file = UploadedFile::fake()->image('product.jpg');
+
+    $product = [
+        'name' => 'Product With Image',
+        'price' => 999,
+        'image' => $file,
+    ];
+
+    asAdmin()
+        ->post('/products', $product)
+        ->assertStatus(302);
+
+    $lastProduct = Product::latest()->first();
+
+    $this->assertTrue(Storage::disk('public')->exists($lastProduct->image_path));
 });

@@ -14,6 +14,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'price',
+        'image_path',
     ];
 
     protected function priceEur(): Attribute

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\ProductDeletedNotification;
 use App\Jobs\SyncProductToExternalCatalog;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -29,7 +30,13 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request): RedirectResponse
     {
-        $product = Product::create($request->validated());
+        $validated = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $validated['image_path'] = $request->file('image')->store('products', 'public');
+        }
+
+        $product = Product::create($validated);
 
         Mail::to(Auth::user()->email)->send(new ProductCreatedMail($product));
 
