@@ -247,3 +247,21 @@ test('authenticated user can view single product', function () {
         ->assertStatus(200)
         ->assertSee($product->name);
 });
+
+test('product show page displays eur price', function () {
+    $product = Product::factory()->create(['price' => 100]);
+
+    actingAs($this->user)
+        ->get('/products/' . $product->id)
+        ->assertStatus(200)
+        ->assertViewHas('product', function ($viewProduct) use ($product) {
+            return $viewProduct->id === $product->id
+                && $viewProduct->price_eur === $product->price_eur;
+        });
+});
+
+test('product show returns 404 for non existent product', function () {
+    actingAs($this->user)
+        ->get('/products/99999')
+        ->assertStatus(404);
+});

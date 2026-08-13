@@ -12,6 +12,7 @@
     <div class="max-w-3xl mx-auto">
         <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ $product->name }}</h2>
         <p class="text-gray-700">Price: ${{ number_format($product->price, 2) }}</p>
+        <p class="text-gray-700">Price (EUR): {{ $product->price_eur }}</p>
     </div>
 </body>
 
