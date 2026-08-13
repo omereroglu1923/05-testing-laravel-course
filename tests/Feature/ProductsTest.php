@@ -246,3 +246,34 @@ test('product image is stored on upload', function () {
 
     $this->assertTrue(Storage::disk('public')->exists($lastProduct->image_path));
 });
+
+test('non admin cannot access product edit page', function () {
+    $product = Product::factory()->create();
+
+    actingAs($this->user)
+        ->get('products/' . $product->id . '/edit')
+        ->assertForbidden();
+});
+
+test('non admin cannot update product', function () {
+    $product = Product::factory()->create();
+
+    actingAs($this->user)
+        ->put('products/' . $product->id, [
+            'name' => 'Hacked Name',
+            'price' => 1,
+        ])
+        ->assertForbidden();
+
+    $this->assertDatabaseMissing('products', ['name' => 'Hacked Name']);
+});
+
+test('non admin cannot delete product', function () {
+    $product = Product::factory()->create();
+
+    actingAs($this->user)
+        ->delete('products/' . $product->id)
+        ->assertForbidden();
+
+    $this->assertDatabaseHas('products', ['id' => $product->id]);
+});
