@@ -9,6 +9,8 @@ use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 use App\Mail\ProductCreatedMail;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\ProductDeletedNotification;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     /** @var \Tests\TestCase $this */
@@ -177,5 +179,20 @@ test('product created mail is sent to admin', function () {
 
     Mail::assertSent(ProductCreatedMail::class, function ($mail) use ($product) {
         return $mail->product->name === $product['name'];
+    });
+});
+
+test('product deleted notification is sent to admin', function () {
+    Notification::fake();
+
+    $product = Product::factory()->create();
+    $admin = User::factory()->create(['is_admin' => true]);
+
+    actingAs($admin)
+        ->delete('products/' . $product->id)
+        ->assertStatus(302);
+
+    Notification::assertSentTo($admin, ProductDeletedNotification::class, function ($notification) use ($product) {
+        return $notification->productName === $product->name;
     });
 });

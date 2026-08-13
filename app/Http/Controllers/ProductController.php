@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\ProductDeletedNotification;
 
 class ProductController extends Controller
 {
@@ -48,7 +49,10 @@ class ProductController extends Controller
 
     public function destroy(Product $product): RedirectResponse
     {
+        $productName = $product->name;
         $product->delete();
+
+        Auth::user()->notify(new ProductDeletedNotification($productName));
 
         return redirect()->route('products.index');
     }
