@@ -238,3 +238,12 @@ test('non admin cannot delete product', function () {
 
     $this->assertDatabaseHas('products', ['id' => $product->id]);
 });
+
+test('authenticated user can view single product', function () {
+    $product = Product::factory()->create();
+
+    actingAs($this->user)
+        ->get('/products/' . $product->id)
+        ->assertStatus(200)
+        ->assertSee($product->name);
+});
