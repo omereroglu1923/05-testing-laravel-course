@@ -151,7 +151,7 @@ test('product created mail is sent to admin', function () {
         ->post('/products', $product)
         ->assertStatus(302);
 
-    Mail::assertSent(ProductCreatedMail::class, function ($mail) use ($product) {
+    Mail::assertQueued(ProductCreatedMail::class, function ($mail) use ($product) {
         return $mail->product->name === $product['name'];
     });
 });
