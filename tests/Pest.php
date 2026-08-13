@@ -28,6 +28,8 @@ pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in('Feature');
 
+pest()->group('api')->in('Feature/Api');
+
 /*
 |--------------------------------------------------------------------------
 | Expectations
