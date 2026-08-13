@@ -2,17 +2,18 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Http;
+
 class CurrencyService
 {
-    const array RATES = [
-        'usd' => [
-            'eur' => 0.98
-        ],
-    ];
-
     public function convert(float $amount, string $currencyFrom, string $currencyTo): float
     {
-        $rate = self::RATES[$currencyFrom][$currencyTo] ?? 0;
+        $response = Http::get('https://api.exchangerate-fake.test/rates', [
+            'from' => $currencyFrom,
+            'to' => $currencyTo,
+        ]);
+
+        $rate = $response->json('rate') ?? 0;
 
         return round($amount * $rate, 2);
     }

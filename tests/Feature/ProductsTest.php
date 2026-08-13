@@ -15,6 +15,7 @@ use App\Jobs\SyncProductToExternalCatalog;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
     /** @var \Tests\TestCase $this */
@@ -29,6 +30,10 @@ test('homepage contains empty table', function () {
 });
 
 test('homepage contains non empty table', function () {
+    Http::fake([
+        'api.exchangerate-fake.test/*' => Http::response(['rate' => 0.98], 200),
+    ]);
+
     $product = Product::create([
         'name'  => 'Product 1',
         'price' => 123,
@@ -45,6 +50,10 @@ test('homepage contains non empty table', function () {
 });
 
 test('paginated products table doesnt contain 11th record', function () {
+    Http::fake([
+        'api.exchangerate-fake.test/*' => Http::response(['rate' => 0.98], 200),
+    ]);
+
     $products = Product::factory(11)->create();
     $lastProduct = $products->last();
 
